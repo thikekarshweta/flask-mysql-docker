@@ -1,9 +1,9 @@
-name: Build and Push Docker Image
+name: Build and Deploy
 
 on:
   push:
     branches:
-      - main   # triggers only when you push to main branch
+      - main
 
 jobs:
   build:
@@ -28,3 +28,20 @@ jobs:
           context: .
           push: true
           tags: shwetathikekar17/flask-mysql-docker:latest
+
+  deploy:
+    runs-on: self-hosted
+    needs: build
+
+    steps:
+      - name: Checkout repo code
+        uses: actions/checkout@v3
+
+      - name: Pull latest Docker image from DockerHub
+        run: docker pull shwetathikekar17/flask-mysql-docker:latest
+
+      - name: Stop existing containers
+        run: docker compose down || true
+
+      - name: Start containers using Compose
+        run: docker compose up -d
