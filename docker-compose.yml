@@ -12,7 +12,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-      - /Users/shweta.thikekar/Downloads/flask_mysql_app/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uappuser", "-pappuserpass"]
       interval: 10s
@@ -20,7 +20,7 @@ services:
       retries: 5
 
   web:
-    image: flask_mysql_app-web:latest
+    image: image: shwetathikekar17/flask-mysql-docker:latest
     ports:
       - "5000:5000"
     depends_on:
