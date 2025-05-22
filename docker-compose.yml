@@ -20,7 +20,7 @@ services:
       retries: 5
 
   web:
-    image: image: shwetathikekar17/flask-mysql-docker:latest
+    image: shwetathikekar17/flask-mysql-docker:latest
     ports:
       - "5000:5000"
     depends_on:
