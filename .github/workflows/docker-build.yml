@@ -30,7 +30,7 @@ jobs:
           tags: shwetathikekar17/flask-mysql-docker:latest
 
   deploy:
-    runs-on: self-hosted
+    runs-on: flask
     needs: build
 
     steps:
