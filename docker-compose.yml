@@ -12,7 +12,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-      - - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uappuser", "-pappuserpass"]
       interval: 10s
@@ -20,12 +20,36 @@ services:
       retries: 5
 
   web:
-    image: image: shwetathikekar17/flask-mysql-docker:latest
+    image: shwetathikekar17/flask-mysql-docker:latest
     ports:
       - "5000:5000"
     depends_on:
       mysql:
         condition: service_healthy
 
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - prometheus_data:/etc/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  
+  mysql-exporter:
+    image: prom/mysqld-exporter
+    ports:
+      - 9104:9104
+    command:
+      - "--mysqld.username=root:rootpass"
+      - "--mysqld.address=172.31.85.83:3306"
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    
+      
 volumes:
   mysql-data:
+  prometheus_data:
+  
