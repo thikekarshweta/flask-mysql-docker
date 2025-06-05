@@ -60,6 +60,19 @@ spec:
             - mountPath: /docker-entrypoint-initdb.d/init.sql
               subPath: init.sql
               name: init-script
+          readinessProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+                - -h
+                - localhost
+                - -uappuser
+                - -pappuserpass
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 5
       volumes:
         - name: mysql-storage
           persistentVolumeClaim:
