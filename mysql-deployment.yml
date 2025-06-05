@@ -1,32 +1,3 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mysql-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
-  storageClassName: gp2  # or gp3 if you're using that
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mysql-init
-data:
-  init.sql: |
-    CREATE DATABASE IF NOT EXISTS testdb;
-    USE testdb;
-
-    CREATE TABLE IF NOT EXISTS users (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(100)
-    );
-
-    GRANT ALL PRIVILEGES ON testdb.* TO 'appuser'@'%';
-    FLUSH PRIVILEGES;
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -76,8 +47,7 @@ spec:
             failureThreshold: 5
       volumes:
         - name: mysql-storage
-          persistentVolumeClaim:
-            claimName: mysql-pvc
+          emptyDir: {}
         - name: init-script
           configMap:
             name: mysql-init
