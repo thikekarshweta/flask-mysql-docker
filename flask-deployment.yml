@@ -12,6 +12,15 @@ spec:
       labels:
         app: flask
     spec:
+      initContainers:
+        - name: wait-for-mysql
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              "until nc -z mysql 3306; do echo waiting for mysql; sleep 5; done"
+            ]
       containers:
         - name: flask
           image: shwetathikekar17/flask-mysql-docker:latest
