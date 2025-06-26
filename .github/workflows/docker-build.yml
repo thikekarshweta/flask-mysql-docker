@@ -1,9 +1,9 @@
-#name: Build and Deploy
+name: Build and Deploy
 
-#on:
-#  push:
-#    branches:
-#      - main
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -30,7 +30,7 @@ jobs:
           tags: shwetathikekar17/flask-mysql-docker:latest
 
   deploy:
-    runs-on: docker
+    runs-on: flask
     needs: build
 
     steps:
