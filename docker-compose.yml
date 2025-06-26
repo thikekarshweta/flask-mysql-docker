@@ -26,30 +26,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - 9090:9090
-    volumes:
-      - prometheus_data:/etc/prometheus
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-  
-  mysql-exporter:
-    image: prom/mysqld-exporter
-    ports:
-      - 9104:9104
-    command:
-      - "--mysqld.username=root:rootpass"
-      - "--mysqld.address=172.31.85.83:3306"
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
     
       
 volumes:
   mysql-data:
-  prometheus_data:
   
